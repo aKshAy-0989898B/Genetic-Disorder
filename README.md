@@ -179,7 +179,7 @@ Use the `/input` page and fill in:
 ACGTACGTGACCTGACTGACTGACCTGACCGTACGTACGTGACCTGACTGACTGACCTGACCGT
 ```
 
-Click **Submit**. You should see:
+Click **Submit**. 
 
 ### 5.2 Upload File Example
 
