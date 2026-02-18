@@ -6,15 +6,22 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from transformers import BertTokenizer, BertForSequenceClassification
 import pandas as pd
 
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ.pop("HF_TOKEN", None)
+os.environ.pop("HUGGINGFACE_TOKEN", None)
+os.environ.pop("HUGGING_FACE_HUB_TOKEN", None)
+
 app = Flask(__name__)
 app.secret_key = 'ak@11'
 
-MODEL_PATH = "dnabert_finetuned"
-tokenizer = BertTokenizer.from_pretrained(MODEL_PATH)
-model = BertForSequenceClassification.from_pretrained(MODEL_PATH)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "dnabert_finetuned")
+tokenizer = BertTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
+model = BertForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
 model.eval()
 
-df = pd.read_csv("tokenized_genome_data.csv")
+df = pd.read_csv(os.path.join(BASE_DIR, "tokenized_genome_data.csv"))
 label_encoder = {i: label for i, label in enumerate(df["Disorder"].unique())}
 
 def init_db():
